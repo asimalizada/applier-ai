@@ -1,4 +1,10 @@
+"use client";
+
+import { useState } from "react";
+
 export default function Home() {
+  const [hasPreview, setHasPreview] = useState(false);
+
   return (
     <main className="min-h-screen bg-[linear-gradient(180deg,#f6f1e8_0%,#f3efe8_24%,#ece7de_100%)] text-stone-900">
       <div className="mx-auto flex min-h-screen w-full max-w-[1480px] flex-col px-6 py-6 sm:px-8 lg:px-10">
@@ -50,6 +56,7 @@ export default function Home() {
                     </p>
                     <button
                       type="button"
+                      onClick={() => setHasPreview(true)}
                       className="inline-flex items-center justify-center rounded-full bg-stone-950 px-5 py-3 text-sm font-medium text-stone-50 transition hover:bg-stone-800"
                     >
                       Tailor CV
@@ -68,12 +75,13 @@ export default function Home() {
                     Preview
                   </p>
                   <h2 className="text-2xl font-semibold tracking-[-0.03em] text-white">
-                    Tailored draft
+                    {hasPreview ? "Tailored draft" : "Awaiting first draft"}
                   </h2>
                 </div>
                 <p className="max-w-sm text-sm leading-6 text-stone-300">
-                  Your tailored CV preview will appear here once the first pass
-                  is generated.
+                  {hasPreview
+                    ? "This mock preview represents the structure of your tailored CV before AI generation is connected."
+                    : "Your tailored CV preview will appear here once you run the first tailoring pass."}
                 </p>
               </div>
 
