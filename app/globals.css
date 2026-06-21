@@ -33,3 +33,50 @@ input {
   font-family:
     "Iowan Old Style", "Palatino Linotype", "Book Antiqua", Georgia, serif;
 }
+
+.app-scrollbar {
+  scrollbar-width: thin;
+  scrollbar-color: rgba(154, 141, 128, 0.95) transparent;
+}
+
+.app-scrollbar::-webkit-scrollbar {
+  width: 10px;
+  height: 10px;
+}
+
+.app-scrollbar::-webkit-scrollbar-track {
+  background: transparent;
+  border-radius: 999px;
+}
+
+.app-scrollbar::-webkit-scrollbar-thumb {
+  border: 3px solid transparent;
+  border-radius: 999px;
+  background: linear-gradient(180deg, #b1a290 0%, #8f8376 100%);
+  background-clip: padding-box;
+}
+
+.app-scrollbar::-webkit-scrollbar-thumb:hover {
+  background: linear-gradient(180deg, #baa996 0%, #9a8a7b 100%);
+  background-clip: padding-box;
+}
+
+.app-scrollbar::-webkit-scrollbar-corner {
+  background: transparent;
+}
+
+textarea.app-scrollbar {
+  scrollbar-gutter: stable;
+}
+
+textarea.app-scrollbar::-webkit-resizer {
+  background:
+    linear-gradient(
+      135deg,
+      transparent 0,
+      transparent 58%,
+      rgba(177, 162, 144, 0.75) 58%,
+      rgba(177, 162, 144, 0.75) 68%,
+      transparent 68%
+    );
+}
