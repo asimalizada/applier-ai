@@ -7,8 +7,21 @@ export default function Home() {
         <div className="grid flex-1 gap-6 lg:grid-cols-[minmax(0,0.95fr)_minmax(380px,0.75fr)]">
           <section className="rounded-[32px] border border-stone-900/10 bg-white/70 p-6 shadow-[0_30px_80px_rgba(28,25,23,0.08)] backdrop-blur-sm sm:p-8">
             <div className="flex h-full min-h-[420px] flex-col gap-5">
-              <div className="h-4 w-24 rounded-full bg-stone-900/8" />
-              <div className="h-20 rounded-[24px] bg-stone-900/[0.045]" />
+              <div className="space-y-4">
+                <p className="text-[0.72rem] font-medium uppercase tracking-[0.28em] text-stone-500">
+                  Applier AI
+                </p>
+                <div className="max-w-2xl space-y-3">
+                  <h1 className="text-4xl font-semibold tracking-[-0.04em] text-stone-950 sm:text-5xl">
+                    Shape each application with more intent.
+                  </h1>
+                  <p className="max-w-xl text-sm leading-7 text-stone-600 sm:text-[0.95rem]">
+                    Tailor your CV against a target role, review each change,
+                    and export a polished PDF without drifting away from your
+                    real experience.
+                  </p>
+                </div>
+              </div>
               <div className="flex-1 rounded-[28px] border border-dashed border-stone-900/10 bg-stone-900/[0.03]" />
             </div>
           </section>
