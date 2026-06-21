@@ -112,6 +112,7 @@ function SkillChip({ label }: LabelProps) {
 export default function Home() {
   const [hasPreview, setHasPreview] = useState(false);
   const [jobDescription, setJobDescription] = useState(sampleJobDescription);
+  const [summary, setSummary] = useState(summaryText);
 
   const previewReady = hasPreview;
 
@@ -244,9 +245,11 @@ export default function Home() {
                       icon={<UserRound className="h-4 w-4" />}
                       title="Summary"
                     >
-                      <p className="text-[0.97rem] leading-8 text-stone-200">
-                        {summaryText}
-                      </p>
+                      <textarea
+                        value={summary}
+                        onChange={(event) => setSummary(event.target.value)}
+                        className="app-scrollbar min-h-[168px] w-full resize-y rounded-[10px] border border-white/8 bg-[#211d1a] px-4 py-3 text-[0.97rem] leading-8 text-stone-200 outline-none transition focus:border-[#4a433d] focus:ring-2 focus:ring-white/5"
+                      />
                     </PreviewSection>
 
                     <PreviewSection
