@@ -114,6 +114,9 @@ export default function Home() {
   const [jobDescription, setJobDescription] = useState(sampleJobDescription);
   const [summary, setSummary] = useState(summaryText);
   const [skillsText, setSkillsText] = useState(skillItems.join(", "));
+  const [experienceText, setExperienceText] = useState(
+    experienceItems.join("\n"),
+  );
 
   const previewReady = hasPreview;
 
@@ -289,11 +292,13 @@ export default function Home() {
                           <span className="text-stone-500">•</span>
                           <span>2021 – Present</span>
                         </div>
-                        <ul className="space-y-2.5 pl-5 text-[0.95rem] leading-7 text-stone-200 marker:text-stone-500">
-                          {experienceItems.map((item) => (
-                            <li key={item}>{item}</li>
-                          ))}
-                        </ul>
+                        <textarea
+                          value={experienceText}
+                          onChange={(event) =>
+                            setExperienceText(event.target.value)
+                          }
+                          className="app-scrollbar min-h-[220px] w-full resize-y rounded-[10px] border border-white/8 bg-[#211d1a] px-4 py-3 text-[0.95rem] leading-7 text-stone-200 outline-none transition focus:border-[#4a433d] focus:ring-2 focus:ring-white/5"
+                        />
                       </div>
                     </PreviewSection>
 
