@@ -22,7 +22,29 @@ export default function Home() {
                   </p>
                 </div>
               </div>
-              <div className="flex-1 rounded-[28px] border border-dashed border-stone-900/10 bg-stone-900/[0.03]" />
+
+              <div className="flex-1 rounded-[28px] border border-stone-900/10 bg-[#fbfaf7] p-4 sm:p-5">
+                <div className="flex h-full flex-col gap-3">
+                  <div className="space-y-1">
+                    <label
+                      htmlFor="job-description"
+                      className="text-sm font-medium text-stone-700"
+                    >
+                      Job description
+                    </label>
+                    <p className="text-sm leading-6 text-stone-500">
+                      Paste the full role description to tailor your CV draft.
+                    </p>
+                  </div>
+
+                  <textarea
+                    id="job-description"
+                    name="jobDescription"
+                    placeholder="Paste the target role here..."
+                    className="min-h-[260px] flex-1 resize-none rounded-[24px] border border-stone-900/10 bg-white px-5 py-4 text-sm leading-7 text-stone-800 outline-none transition focus:border-stone-900/20 focus:ring-4 focus:ring-stone-900/5"
+                  />
+                </div>
+              </div>
             </div>
           </section>
 
