@@ -66,40 +66,6 @@ function SparkIcon() {
   );
 }
 
-function UploadIcon() {
-  return (
-    <svg
-      aria-hidden="true"
-      viewBox="0 0 24 24"
-      className="h-4 w-4 fill-none stroke-current"
-      strokeWidth="1.8"
-      strokeLinecap="round"
-      strokeLinejoin="round"
-    >
-      <path d="M12 16V5" />
-      <path d="m8 9 4-4 4 4" />
-      <path d="M20 16.5V18a2 2 0 0 1-2 2H6a2 2 0 0 1-2-2v-1.5" />
-    </svg>
-  );
-}
-
-function HistoryIcon() {
-  return (
-    <svg
-      aria-hidden="true"
-      viewBox="0 0 24 24"
-      className="h-4 w-4 fill-none stroke-current"
-      strokeWidth="1.8"
-      strokeLinecap="round"
-      strokeLinejoin="round"
-    >
-      <path d="M3 12a9 9 0 1 0 3-6.7" />
-      <path d="M3 4v5h5" />
-      <path d="M12 7v5l3 2" />
-    </svg>
-  );
-}
-
 function ClipboardIcon() {
   return (
     <svg
@@ -366,71 +332,16 @@ export default function Home() {
   };
 
   return (
-    <main className="min-h-screen bg-[#f7f3ee] px-4 py-4 text-stone-900 sm:px-6 sm:py-6 lg:px-8 lg:py-8">
-      <div className="mx-auto max-w-[1460px] rounded-[34px] border border-[#dfd6ca] bg-[radial-gradient(circle_at_top,#fffdfa_0%,#f9f5ef_44%,#f5f0e8_100%)] p-5 shadow-[0_28px_80px_rgba(66,50,31,0.14)] sm:p-6 lg:p-8">
-        <div className="rounded-[28px] border border-[#e4dbcf] bg-white/72 shadow-[inset_0_1px_0_rgba(255,255,255,0.8)] backdrop-blur">
-          <div className="flex items-center justify-between border-b border-[#eadfce] px-5 py-3 sm:px-6">
-            <div className="flex items-center gap-2.5 text-stone-400">
-              <span className="h-3 w-3 rounded-full bg-[#e98e7b]" />
-              <span className="h-3 w-3 rounded-full bg-[#e7c564]" />
-              <span className="h-3 w-3 rounded-full bg-[#72bf74]" />
-            </div>
-            <div className="flex min-w-0 flex-1 justify-center px-4">
-              <div className="flex w-full max-w-md items-center justify-center gap-2 rounded-2xl border border-[#ebe3d9] bg-[#f6f1ea] px-4 py-2 text-sm text-stone-500">
-                <span className="text-stone-400">applier.ai</span>
-              </div>
-            </div>
-            <button
-              type="button"
-              className="flex h-9 w-9 items-center justify-center rounded-full border border-transparent text-stone-500 transition hover:border-[#e6ddcf] hover:bg-white"
-            >
-              <span className="text-xl leading-none">+</span>
-            </button>
-          </div>
+    <main className="min-h-screen bg-[#f7f3ee] px-5 py-6 text-stone-900 sm:px-6 lg:px-8 lg:py-8">
+      <div className="mx-auto flex max-w-[1440px] flex-col gap-5">
+        <div className="flex items-center justify-center gap-3 rounded-full border border-[#e8dfd4] bg-[#fbf7f1] px-6 py-3 text-center text-sm text-stone-600 shadow-[0_12px_24px_rgba(17,17,17,0.03)]">
+          <span className="text-[#b08145]">
+            <SparkIcon />
+          </span>
+          <p>Tailor your CV with clear, reviewable AI suggestions.</p>
+        </div>
 
-          <header className="flex flex-col gap-4 border-b border-[#eadfce] px-5 py-4 sm:px-6 lg:flex-row lg:items-center lg:justify-between">
-            <div className="flex items-center gap-3">
-              <div className="flex h-10 w-10 items-center justify-center rounded-2xl bg-[#fbf5eb] text-[#b08145] shadow-[inset_0_1px_0_rgba(255,255,255,0.7)]">
-                <SparkIcon />
-              </div>
-              <div className="flex items-center gap-2">
-                <span className="font-editorial text-[2rem] leading-none tracking-[-0.04em] text-stone-950">
-                  Applier AI
-                </span>
-              </div>
-            </div>
-
-            <div className="flex flex-wrap items-center gap-2 sm:gap-3">
-              <button
-                type="button"
-                className="inline-flex items-center gap-2 rounded-full border border-transparent px-3 py-2 text-sm font-medium text-stone-700 transition hover:border-[#e4d9c9] hover:bg-[#faf6f1]"
-              >
-                <UploadIcon />
-                <span>Import CV</span>
-              </button>
-              <button
-                type="button"
-                className="inline-flex items-center gap-2 rounded-full border border-transparent px-3 py-2 text-sm font-medium text-stone-700 transition hover:border-[#e4d9c9] hover:bg-[#faf6f1]"
-              >
-                <HistoryIcon />
-                <span>History</span>
-              </button>
-              <div className="flex h-11 w-11 items-center justify-center rounded-full border border-[#e7ddcf] bg-[linear-gradient(180deg,#d1b08a_0%,#9f7950_100%)] text-sm font-semibold text-white">
-                AA
-              </div>
-            </div>
-          </header>
-
-          <div className="px-5 pt-5 sm:px-6">
-            <div className="flex items-center justify-center gap-3 rounded-full border border-[#e8dfd4] bg-[#fbf7f1] px-6 py-3 text-center text-sm text-stone-600 shadow-[0_12px_24px_rgba(17,17,17,0.03)]">
-              <span className="text-[#b08145]">
-                <SparkIcon />
-              </span>
-              <p>Tailor your CV with clear, reviewable AI suggestions.</p>
-            </div>
-          </div>
-
-          <div className="grid gap-5 px-5 py-5 sm:px-6 sm:py-6 lg:grid-cols-[minmax(0,1.08fr)_minmax(420px,0.92fr)] lg:items-start">
+        <div className="grid gap-5 lg:grid-cols-[minmax(0,1.08fr)_minmax(420px,0.92fr)] lg:items-start">
             <section className="rounded-[30px] border border-[#e5dbce] bg-[linear-gradient(180deg,#fffdfa_0%,#fcf8f2_100%)] p-6 shadow-[0_24px_60px_rgba(50,36,20,0.08)] sm:p-7 lg:p-8">
               <div className="space-y-6">
                 <div className="space-y-4">
@@ -658,7 +569,6 @@ export default function Home() {
                 </div>
               </div>
             </aside>
-          </div>
         </div>
       </div>
     </main>
