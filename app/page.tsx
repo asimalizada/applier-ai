@@ -111,6 +111,7 @@ function SkillChip({ label }: LabelProps) {
 
 export default function Home() {
   const [hasPreview, setHasPreview] = useState(false);
+  const [isGenerating, setIsGenerating] = useState(false);
   const [jobDescription, setJobDescription] = useState(sampleJobDescription);
   const [summary, setSummary] = useState(summaryText);
   const [skillsText, setSkillsText] = useState(skillItems.join(", "));
@@ -139,6 +140,14 @@ export default function Home() {
     } catch {
       setJobDescription(sampleJobDescription);
     }
+  };
+
+  const handleTailorCv = () => {
+    setIsGenerating(true);
+    window.setTimeout(() => {
+      setHasPreview(true);
+      setIsGenerating(false);
+    }, 700);
   };
 
   return (
@@ -200,14 +209,15 @@ export default function Home() {
                 <div className="flex flex-col gap-3 sm:flex-row">
                   <button
                     type="button"
-                    onClick={() => setHasPreview(true)}
+                    onClick={handleTailorCv}
+                    disabled={isGenerating}
                     className="inline-flex min-h-14 flex-1 items-center justify-between rounded-[12px] bg-[#171412] px-5 py-4 text-left text-stone-50 shadow-[0_20px_40px_rgba(20,18,16,0.22)] transition hover:bg-[#211d1a]"
                   >
                     <span className="flex items-center gap-3 text-sm font-medium">
                       <span className="text-[#d8b98f]">
                         <Sparkles className="h-4 w-4" />
                       </span>
-                      Tailor CV
+                      {isGenerating ? "Tailoring..." : "Tailor CV"}
                     </span>
                     <ArrowRight className="h-4 w-4" />
                   </button>
@@ -234,21 +244,35 @@ export default function Home() {
                 </p>
                 <div className="flex flex-wrap items-center gap-3">
                   <h2 className="font-editorial text-3xl leading-none tracking-[-0.05em] text-white">
-                    {previewReady ? "Draft ready" : "Awaiting review"}
+                    {isGenerating
+                      ? "Generating draft"
+                      : previewReady
+                        ? "Draft ready"
+                        : "Awaiting review"}
                   </h2>
                   <span
                     className={`inline-flex items-center gap-2 rounded-[10px] border px-3 py-1.5 text-sm ${
-                      previewReady
+                      isGenerating
+                        ? "border-[#6e603f] bg-[#2b251c] text-[#d4bf8f]"
+                        : previewReady
                         ? "border-[#26653b] bg-[#163421] text-[#7fe59f]"
                         : "border-white/10 bg-white/[0.04] text-stone-300"
                     }`}
                   >
                     <span
                       className={`h-2 w-2 rounded-full ${
-                        previewReady ? "bg-[#3dd273]" : "bg-stone-500"
+                        isGenerating
+                          ? "bg-[#d0b37a]"
+                          : previewReady
+                            ? "bg-[#3dd273]"
+                            : "bg-stone-500"
                       }`}
                     />
-                    {previewReady ? "Ready" : "Standby"}
+                    {isGenerating
+                      ? "Working"
+                      : previewReady
+                        ? "Ready"
+                        : "Standby"}
                   </span>
                 </div>
               </div>
@@ -350,7 +374,7 @@ export default function Home() {
               <div className="grid gap-3 pt-2 sm:grid-cols-2">
                 <button
                   type="button"
-                  onClick={() => setHasPreview(true)}
+                  onClick={handleTailorCv}
                   className="inline-flex min-h-14 items-center justify-center gap-3 rounded-[12px] border border-white/10 bg-white/[0.03] px-5 py-4 text-sm font-medium text-stone-100 transition hover:bg-white/[0.06]"
                 >
                   <RefreshCcw className="h-4 w-4" />
