@@ -104,7 +104,17 @@ export default function Home() {
                   </div>
                 </div>
                 <div className="rounded-[24px] border border-white/8 bg-white/[0.04] p-4">
-                  <div className="h-3 w-24 rounded-full bg-white/10" />
+                  <div className="space-y-3">
+                    <p className="text-[0.68rem] font-medium uppercase tracking-[0.24em] text-stone-400">
+                      Experience
+                    </p>
+                    <div className="space-y-2">
+                      <div className="h-2.5 w-32 rounded-full bg-white/9" />
+                      <div className="h-2.5 w-full rounded-full bg-white/8" />
+                      <div className="h-2.5 w-[88%] rounded-full bg-white/8" />
+                      <div className="h-2.5 w-[74%] rounded-full bg-white/8" />
+                    </div>
+                  </div>
                 </div>
               </div>
 
