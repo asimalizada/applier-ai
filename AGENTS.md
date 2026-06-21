@@ -43,6 +43,15 @@ The app should:
 - AI: local `Ollama + Qwen3`
 - output: `PDF`
 
+## Design Direction
+
+- avoid generic SaaS styling
+- avoid obvious AI-generated visual patterns
+- prefer a premium, calm, and polished interface
+- keep the product visually professional and trustworthy
+- use strong typography, clean spacing, and restrained color usage
+- the UI should feel intentional, not templated
+
 ## AI Safety Rules
 
 - do not invent experience
