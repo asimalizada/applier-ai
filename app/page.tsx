@@ -113,6 +113,7 @@ export default function Home() {
   const [hasPreview, setHasPreview] = useState(false);
   const [jobDescription, setJobDescription] = useState(sampleJobDescription);
   const [summary, setSummary] = useState(summaryText);
+  const [skillsText, setSkillsText] = useState(skillItems.join(", "));
 
   const previewReady = hasPreview;
 
@@ -256,10 +257,21 @@ export default function Home() {
                       icon={<CodeXml className="h-4 w-4" />}
                       title="Skills"
                     >
-                      <div className="flex flex-wrap gap-2.5">
-                        {skillItems.map((item) => (
+                      <div className="space-y-3">
+                        <textarea
+                          value={skillsText}
+                          onChange={(event) => setSkillsText(event.target.value)}
+                          className="app-scrollbar min-h-[120px] w-full resize-y rounded-[10px] border border-white/8 bg-[#211d1a] px-4 py-3 text-[0.95rem] leading-7 text-stone-200 outline-none transition focus:border-[#4a433d] focus:ring-2 focus:ring-white/5"
+                        />
+                        <div className="flex flex-wrap gap-2.5">
+                          {skillsText
+                            .split(",")
+                            .map((item) => item.trim())
+                            .filter(Boolean)
+                            .map((item) => (
                           <SkillChip key={item} label={item} />
-                        ))}
+                            ))}
+                        </div>
                       </div>
                     </PreviewSection>
 
