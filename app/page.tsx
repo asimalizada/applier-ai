@@ -117,6 +117,16 @@ export default function Home() {
   const [experienceText, setExperienceText] = useState(
     experienceItems.join("\n"),
   );
+  const [isProfileOpen, setIsProfileOpen] = useState(false);
+  const [profileText, setProfileText] = useState(
+    [
+      "Frontend Engineer",
+      "TypeScript",
+      "React / Next.js",
+      "Node.js",
+      "PostgreSQL",
+    ].join("\n"),
+  );
 
   const previewReady = hasPreview;
 
@@ -146,6 +156,7 @@ export default function Home() {
 
                 <button
                   type="button"
+                  onClick={() => setIsProfileOpen(true)}
                   className="inline-flex items-center gap-2 self-start rounded-[12px] border border-[#e4dbcf] bg-[#faf6f1] px-3.5 py-2 text-sm font-medium text-stone-700 transition hover:border-[#d6c9b8] hover:bg-white"
                 >
                   <Pencil className="h-4 w-4" />
@@ -357,6 +368,61 @@ export default function Home() {
           </aside>
         </div>
       </div>
+
+      {isProfileOpen ? (
+        <div className="fixed inset-0 z-50 flex items-center justify-center bg-stone-950/28 px-4 py-6 backdrop-blur-[2px]">
+          <div className="w-full max-w-xl rounded-[18px] border border-[#e3d8ca] bg-[#fffdfa] p-5 shadow-[0_30px_80px_rgba(32,24,17,0.22)] sm:p-6">
+            <div className="flex items-start justify-between gap-4">
+              <div className="space-y-1">
+                <p className="text-[0.72rem] font-semibold uppercase tracking-[0.32em] text-[#aa7a40]">
+                  Base Profile
+                </p>
+                <h3 className="text-lg font-medium text-stone-900">
+                  Edit source profile context
+                </h3>
+              </div>
+
+              <button
+                type="button"
+                onClick={() => setIsProfileOpen(false)}
+                className="rounded-[10px] border border-[#e4dbcf] px-3 py-1.5 text-sm text-stone-600 transition hover:bg-[#faf6f1]"
+              >
+                Close
+              </button>
+            </div>
+
+            <div className="mt-5 space-y-3">
+              <p className="text-sm leading-7 text-stone-600">
+                Keep one skill or profile signal per line. This context guides
+                future tailoring decisions.
+              </p>
+
+              <textarea
+                value={profileText}
+                onChange={(event) => setProfileText(event.target.value)}
+                className="app-scrollbar min-h-[240px] w-full resize-y rounded-[12px] border border-[#e6ddd2] bg-white px-4 py-3 text-[0.95rem] leading-7 text-stone-800 outline-none transition focus:border-[#cdb79c] focus:ring-4 focus:ring-[#b08145]/10"
+              />
+            </div>
+
+            <div className="mt-5 flex justify-end gap-3">
+              <button
+                type="button"
+                onClick={() => setIsProfileOpen(false)}
+                className="rounded-[12px] border border-[#e4dbcf] bg-white px-4 py-2.5 text-sm font-medium text-stone-700 transition hover:bg-[#faf6f1]"
+              >
+                Cancel
+              </button>
+              <button
+                type="button"
+                onClick={() => setIsProfileOpen(false)}
+                className="rounded-[12px] bg-[#171412] px-4 py-2.5 text-sm font-medium text-stone-50 transition hover:bg-[#211d1a]"
+              >
+                Save
+              </button>
+            </div>
+          </div>
+        </div>
+      ) : null}
     </main>
   );
 }
