@@ -62,10 +62,34 @@ export default function Home() {
 
           <aside className="rounded-[32px] border border-stone-900/10 bg-[#201c1a] p-5 text-stone-100 shadow-[0_30px_80px_rgba(28,25,23,0.18)] sm:p-6">
             <div className="flex h-full min-h-[420px] flex-col gap-4">
-              <div className="h-4 w-20 rounded-full bg-white/10" />
-              <div className="h-32 rounded-[24px] bg-white/[0.045]" />
-              <div className="h-28 rounded-[24px] bg-white/[0.04]" />
-              <div className="flex-1 rounded-[28px] border border-white/8 bg-white/[0.03]" />
+              <div className="space-y-4">
+                <div className="space-y-1">
+                  <p className="text-[0.72rem] font-medium uppercase tracking-[0.28em] text-stone-400">
+                    Preview
+                  </p>
+                  <h2 className="text-2xl font-semibold tracking-[-0.03em] text-white">
+                    Tailored draft
+                  </h2>
+                </div>
+                <p className="max-w-sm text-sm leading-6 text-stone-300">
+                  Your tailored CV preview will appear here once the first pass
+                  is generated.
+                </p>
+              </div>
+
+              <div className="grid gap-3">
+                <div className="rounded-[24px] border border-white/8 bg-white/[0.045] p-4">
+                  <div className="h-3 w-20 rounded-full bg-white/10" />
+                </div>
+                <div className="rounded-[24px] border border-white/8 bg-white/[0.04] p-4">
+                  <div className="h-3 w-16 rounded-full bg-white/10" />
+                </div>
+                <div className="rounded-[24px] border border-white/8 bg-white/[0.04] p-4">
+                  <div className="h-3 w-24 rounded-full bg-white/10" />
+                </div>
+              </div>
+
+              <div className="flex-1 rounded-[28px] border border-dashed border-white/10 bg-white/[0.025]" />
             </div>
           </aside>
         </div>
