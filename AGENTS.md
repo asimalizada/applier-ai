@@ -51,6 +51,7 @@ The app should:
 - keep the product visually professional and trustworthy
 - use strong typography, clean spacing, and restrained color usage
 - the UI should feel intentional, not templated
+- do not fill screens with meaningless filler text or fake marketing copy
 
 ## AI Safety Rules
 
