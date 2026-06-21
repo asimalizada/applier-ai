@@ -91,7 +91,17 @@ export default function Home() {
                   </div>
                 </div>
                 <div className="rounded-[24px] border border-white/8 bg-white/[0.04] p-4">
-                  <div className="h-3 w-16 rounded-full bg-white/10" />
+                  <div className="space-y-3">
+                    <p className="text-[0.68rem] font-medium uppercase tracking-[0.24em] text-stone-400">
+                      Skills
+                    </p>
+                    <div className="flex flex-wrap gap-2">
+                      <div className="h-8 w-24 rounded-full bg-white/8" />
+                      <div className="h-8 w-20 rounded-full bg-white/8" />
+                      <div className="h-8 w-28 rounded-full bg-white/8" />
+                      <div className="h-8 w-18 rounded-full bg-white/8" />
+                    </div>
+                  </div>
                 </div>
                 <div className="rounded-[24px] border border-white/8 bg-white/[0.04] p-4">
                   <div className="h-3 w-24 rounded-full bg-white/10" />
