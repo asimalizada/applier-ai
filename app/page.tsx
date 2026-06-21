@@ -118,7 +118,19 @@ export default function Home() {
                 </div>
               </div>
 
-              <div className="flex-1 rounded-[28px] border border-dashed border-white/10 bg-white/[0.025]" />
+              <div className="flex-1 rounded-[28px] border border-dashed border-white/10 bg-white/[0.025] p-4">
+                <div className="space-y-3">
+                  <p className="text-[0.68rem] font-medium uppercase tracking-[0.24em] text-stone-400">
+                    Cover letter
+                  </p>
+                  <div className="space-y-2">
+                    <div className="h-2.5 w-28 rounded-full bg-white/8" />
+                    <div className="h-2.5 w-full rounded-full bg-white/[0.07]" />
+                    <div className="h-2.5 w-[90%] rounded-full bg-white/[0.07]" />
+                    <div className="h-2.5 w-[76%] rounded-full bg-white/[0.07]" />
+                  </div>
+                </div>
+              </div>
             </div>
           </aside>
         </div>
