@@ -1,6 +1,6 @@
 "use client";
 
-import { useState } from "react";
+import { useRef, useState } from "react";
 import {
   ArrowRight,
   BadgeCheck,
@@ -112,6 +112,7 @@ function SkillChip({ label }: LabelProps) {
 }
 
 export default function Home() {
+  const printRootRef = useRef<HTMLDivElement | null>(null);
   const [hasPreview, setHasPreview] = useState(false);
   const [isGenerating, setIsGenerating] = useState(false);
   const [generationError, setGenerationError] = useState<string | null>(null);
@@ -191,6 +192,47 @@ Thank you for your time and consideration.
     } catch {
       setCoverLetterCopied(false);
     }
+  };
+
+  const handleExportPdf = () => {
+    const printRoot = printRootRef.current;
+
+    if (!printRoot) {
+      return;
+    }
+
+    const printWindow = window.open("", "_blank", "width=1100,height=900");
+
+    if (!printWindow) {
+      return;
+    }
+
+    const styles = Array.from(document.querySelectorAll("style, link[rel='stylesheet']"))
+      .map((node) => node.outerHTML)
+      .join("\n");
+
+    printWindow.document.write(`
+      <!DOCTYPE html>
+      <html lang="en">
+        <head>
+          <meta charset="utf-8" />
+          <title>Applier AI CV Export</title>
+          ${styles}
+          <style>
+            body {
+              margin: 0;
+              background: #ffffff;
+            }
+          </style>
+        </head>
+        <body>
+          ${printRoot.outerHTML}
+        </body>
+      </html>
+    `);
+    printWindow.document.close();
+    printWindow.focus();
+    printWindow.print();
   };
 
   const printableViewData = {
@@ -472,6 +514,7 @@ Thank you for your time and consideration.
                 </button>
                 <button
                   type="button"
+                  onClick={handleExportPdf}
                   className="inline-flex min-h-14 items-center justify-center gap-3 rounded-[12px] bg-[linear-gradient(180deg,#b78a52_0%,#9f7340_100%)] px-5 py-4 text-sm font-medium text-white shadow-[0_20px_35px_rgba(164,119,61,0.3)] transition hover:brightness-105"
                 >
                   <FileText className="h-4 w-4" />
@@ -609,7 +652,9 @@ Thank you for your time and consideration.
         </div>
 
         <div className="overflow-auto rounded-[14px] border border-[#e8dfd4] bg-[#f5f1ea] p-4">
-          <CvPrintView data={printableViewData} />
+          <div ref={printRootRef}>
+            <CvPrintView data={printableViewData} />
+          </div>
         </div>
       </section>
     </main>
