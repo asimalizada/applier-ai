@@ -298,22 +298,22 @@ Thank you for your time and consideration.
               <div className="rounded-[14px] border border-[#e7ddd1] bg-[#fffdfa] p-4 shadow-[0_14px_34px_rgba(30,24,18,0.04)] lg:flex lg:min-h-0 lg:flex-col">
                 <div className="mb-4 flex flex-col gap-3 sm:flex-row sm:items-center sm:justify-between">
                   <h2 className="text-lg font-medium tracking-[-0.02em] text-stone-900">
-                    Job description
+                    Target role
                   </h2>
                   <div className="flex flex-wrap gap-2">
                     <UtilityButton onClick={handlePaste}>
                       <Clipboard className="h-4 w-4" />
-                      <span>Paste</span>
+                      <span>Paste role</span>
                     </UtilityButton>
                     <UtilityButton
                       onClick={() => setJobDescription(sampleJobDescription)}
                     >
                       <FileText className="h-4 w-4" />
-                      <span>Use sample</span>
+                      <span>Use sample role</span>
                     </UtilityButton>
                     <UtilityButton onClick={() => setJobDescription("")}>
                       <Pencil className="h-4 w-4" />
-                      <span>Clear</span>
+                      <span>Clear field</span>
                     </UtilityButton>
                   </div>
                 </div>
@@ -346,7 +346,7 @@ Thank you for your time and consideration.
                       <span className="text-[#d8b98f]">
                         <Sparkles className="h-4 w-4" />
                       </span>
-                      {isGenerating ? "Tailoring..." : "Tailor CV"}
+                      {isGenerating ? "Tailoring draft..." : "Tailor CV"}
                     </span>
                     <ArrowRight className="h-4 w-4" />
                   </button>
@@ -360,7 +360,7 @@ Thank you for your time and consideration.
                     <FileText className="h-4 w-4" />
                     <span className="text-sm font-medium">
                       {isGeneratingCoverLetter
-                        ? "Generating cover letter..."
+                        ? "Generating letter..."
                         : "Generate cover letter"}
                     </span>
                   </button>
@@ -383,7 +383,7 @@ Thank you for your time and consideration.
                       ? "Generating draft"
                       : previewReady
                         ? "Draft ready"
-                        : "Awaiting review"}
+                        : "Draft preview"}
                   </h2>
                   <span
                     className={`inline-flex items-center gap-2 rounded-[10px] border px-3 py-1.5 text-sm ${
@@ -410,10 +410,10 @@ Thank you for your time and consideration.
                     {generationError
                       ? "Error"
                       : isGenerating
-                      ? "Working"
-                      : previewReady
-                        ? "Ready"
-                        : "Standby"}
+                        ? "Working"
+                        : previewReady
+                          ? "Ready"
+                          : "Idle"}
                   </span>
                 </div>
 
@@ -526,7 +526,7 @@ Thank you for your time and consideration.
                   className="inline-flex min-h-14 items-center justify-center gap-3 rounded-[12px] border border-white/10 bg-white/[0.03] px-5 py-4 text-sm font-medium text-stone-100 transition hover:bg-white/[0.06] disabled:cursor-not-allowed disabled:opacity-60"
                 >
                   <RefreshCcw className="h-4 w-4" />
-                  {isGenerating ? "Regenerating..." : "Regenerate"}
+                  {isGenerating ? "Refreshing draft..." : "Refresh draft"}
                 </button>
                 <button
                   type="button"
@@ -534,7 +534,7 @@ Thank you for your time and consideration.
                   className="inline-flex min-h-14 items-center justify-center gap-3 rounded-[12px] bg-[linear-gradient(180deg,#b78a52_0%,#9f7340_100%)] px-5 py-4 text-sm font-medium text-white shadow-[0_20px_35px_rgba(164,119,61,0.3)] transition hover:brightness-105"
                 >
                   <FileText className="h-4 w-4" />
-                  Export PDF
+                  Export CV PDF
                 </button>
               </div>
             </div>
@@ -551,7 +551,7 @@ Thank you for your time and consideration.
                   Base Profile
                 </p>
                 <h3 className="text-lg font-medium text-stone-900">
-                  Edit source profile context
+                  Edit profile context
                 </h3>
               </div>
 
@@ -567,7 +567,7 @@ Thank you for your time and consideration.
             <div className="mt-5 space-y-3">
               <p className="text-sm leading-7 text-stone-600">
                 Keep one skill or profile signal per line. This context guides
-                future tailoring decisions.
+                tailoring decisions later.
               </p>
 
               <textarea
@@ -607,10 +607,10 @@ Thank you for your time and consideration.
                 </p>
                 <h3 className="text-lg font-medium text-stone-900">
                   {isGeneratingCoverLetter
-                    ? "Generating cover letter"
+                    ? "Generating letter"
                     : hasCoverLetterDraft
                     ? "Cover letter draft"
-                    : "Cover letter action is ready"}
+                    : "Cover letter"}
                 </h3>
               </div>
 
@@ -626,8 +626,7 @@ Thank you for your time and consideration.
             {isGeneratingCoverLetter ? (
               <div className="mt-5 rounded-[12px] border border-[#e7ddd1] bg-white p-4">
                 <p className="text-sm leading-7 text-stone-600">
-                  Preparing a cover letter draft from the current role and
-                  profile context...
+                  Preparing a draft from the current role and profile context...
                 </p>
               </div>
             ) : hasCoverLetterDraft ? (
@@ -641,8 +640,8 @@ Thank you for your time and consideration.
                     onClick={handleCopyCoverLetter}
                     className="inline-flex items-center gap-2 rounded-[10px] border border-[#e4dbcf] bg-[#faf6f1] px-3 py-1.5 text-sm font-medium text-stone-700 transition hover:bg-white"
                   >
-                    <Clipboard className="h-4 w-4" />
-                    {coverLetterCopied ? "Copied" : "Copy"}
+                  <Clipboard className="h-4 w-4" />
+                    {coverLetterCopied ? "Copied" : "Copy text"}
                   </button>
                 </div>
                 <textarea
@@ -669,7 +668,7 @@ Thank you for your time and consideration.
               Print View
             </p>
             <p className="mt-1 text-sm text-stone-600">
-              Separate resume layout for the future PDF export flow.
+              Dedicated resume layout for PDF export.
             </p>
           </div>
         </div>
