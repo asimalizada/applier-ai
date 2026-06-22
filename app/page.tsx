@@ -14,6 +14,7 @@ import {
   Star,
   UserRound,
 } from "lucide-react";
+import { CvPrintView } from "@/components/print/CvPrintView";
 
 const sampleJobDescription = `We're looking for a Senior Frontend Engineer to join our product team.
 You will build performant, accessible web experiences using React and TypeScript.
@@ -567,6 +568,23 @@ Thank you for your time and consideration.
           </div>
         </div>
       ) : null}
+
+      <section className="mx-auto mt-10 w-full max-w-[1440px] rounded-[18px] border border-[#e5dbce] bg-[#fffdfa] p-5 shadow-[0_18px_40px_rgba(50,36,20,0.08)]">
+        <div className="mb-4 flex items-center justify-between gap-3">
+          <div>
+            <p className="text-[0.72rem] font-semibold uppercase tracking-[0.28em] text-[#aa7a40]">
+              Print View
+            </p>
+            <p className="mt-1 text-sm text-stone-600">
+              Separate resume layout for the future PDF export flow.
+            </p>
+          </div>
+        </div>
+
+        <div className="overflow-auto rounded-[14px] border border-[#e8dfd4] bg-[#f5f1ea] p-4">
+          <CvPrintView />
+        </div>
+      </section>
     </main>
   );
 }
