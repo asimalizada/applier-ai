@@ -6,6 +6,14 @@ export type TailorCvPromptInput = {
   currentExperience: string[];
 };
 
+export type CoverLetterPromptInput = {
+  baseProfile: string;
+  jobDescription: string;
+  summary: string;
+  skills: string[];
+  experience: string[];
+};
+
 export function buildTailorCvSystemPrompt(): string {
   return [
     "You are an assistant that tailors a real CV to a target job description.",
@@ -46,5 +54,44 @@ export function buildTailorCvUserPrompt({
     currentExperience.map((item) => `- ${item}`).join("\n"),
     "",
     "Return only valid JSON matching the required shape.",
+  ].join("\n");
+}
+
+export function buildCoverLetterSystemPrompt(): string {
+  return [
+    "You write concise, professional cover letters based only on a real profile and a target role.",
+    "Do not invent experience, achievements, certifications, employers, dates, or responsibilities.",
+    "Use a direct and confident tone without sounding generic or exaggerated.",
+    "Return plain text only. Do not use markdown.",
+    "Keep the result practical, readable, and tailored to the provided role.",
+  ].join(" ");
+}
+
+export function buildCoverLetterUserPrompt({
+  baseProfile,
+  jobDescription,
+  summary,
+  skills,
+  experience,
+}: CoverLetterPromptInput): string {
+  return [
+    "Write a tailored cover letter for the following job.",
+    "",
+    "BASE PROFILE CONTEXT:",
+    baseProfile.trim(),
+    "",
+    "JOB DESCRIPTION:",
+    jobDescription.trim(),
+    "",
+    "CURRENT SUMMARY:",
+    summary.trim(),
+    "",
+    "CURRENT SKILLS:",
+    skills.map((skill) => `- ${skill}`).join("\n"),
+    "",
+    "CURRENT EXPERIENCE BULLETS:",
+    experience.map((item) => `- ${item}`).join("\n"),
+    "",
+    "Write the result as a short professional cover letter.",
   ].join("\n");
 }
