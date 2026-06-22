@@ -7,7 +7,7 @@ type CvPrintViewProps = {
 export function CvPrintView({ data }: CvPrintViewProps) {
   return (
     <article className="cv-print mx-auto w-full max-w-[900px] bg-white px-10 py-12 text-black">
-      <header className="border-b border-[#b8b8b8] pb-4 text-center">
+      <header className="cv-print-section border-b border-[#b8b8b8] pb-4 text-center">
         <h1 className="text-5xl font-extrabold tracking-[0.04em]">
           {data.name}
         </h1>
@@ -24,14 +24,14 @@ export function CvPrintView({ data }: CvPrintViewProps) {
         </div>
       </header>
 
-      <section className="border-b border-[#b8b8b8] py-5">
+      <section className="cv-print-section border-b border-[#b8b8b8] py-5">
         <h2 className="text-[2rem] font-extrabold uppercase tracking-[0.02em]">
           Summary
         </h2>
         <p className="mt-3 text-[1.05rem] leading-9">{data.summary}</p>
       </section>
 
-      <section className="border-b border-[#b8b8b8] py-5">
+      <section className="cv-print-section border-b border-[#b8b8b8] py-5">
         <h2 className="text-[2rem] font-extrabold uppercase tracking-[0.02em]">
           Skills
         </h2>
@@ -44,13 +44,13 @@ export function CvPrintView({ data }: CvPrintViewProps) {
         </div>
       </section>
 
-      <section className="py-5">
+      <section className="cv-print-section py-5">
         <h2 className="text-[2rem] font-extrabold uppercase tracking-[0.02em]">
           Experience
         </h2>
         <div className="mt-4 space-y-6">
           {data.experience.map((item) => (
-            <div key={`${item.heading}-${item.period}`}>
+            <div key={`${item.heading}-${item.period}`} className="cv-print-entry">
               <h3 className="text-[1.2rem] font-bold">{item.heading}</h3>
               <p className="text-[1.1rem] font-semibold">{item.period}</p>
               <ul className="mt-2 space-y-1 text-[1rem] leading-8">

@@ -80,3 +80,43 @@ textarea.app-scrollbar::-webkit-resizer {
       transparent 68%
     );
 }
+
+.cv-print,
+.cv-print * {
+  -webkit-print-color-adjust: exact;
+  print-color-adjust: exact;
+}
+
+.cv-print a {
+  color: #1d4ed8;
+  text-decoration: underline;
+}
+
+.cv-print-section,
+.cv-print-entry {
+  break-inside: avoid;
+}
+
+@page {
+  size: A4;
+  margin: 14mm;
+}
+
+@media print {
+  html,
+  body {
+    background: #ffffff !important;
+  }
+
+  body {
+    margin: 0;
+  }
+
+  .cv-print {
+    width: 100%;
+    max-width: none;
+    margin: 0;
+    padding: 0;
+    box-shadow: none;
+  }
+}
