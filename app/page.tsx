@@ -115,6 +115,7 @@ export default function Home() {
   const printRootRef = useRef<HTMLDivElement | null>(null);
   const [hasPreview, setHasPreview] = useState(false);
   const [isGenerating, setIsGenerating] = useState(false);
+  const [isGeneratingCoverLetter, setIsGeneratingCoverLetter] = useState(false);
   const [generationError, setGenerationError] = useState<string | null>(null);
   const [isCoverLetterOpen, setIsCoverLetterOpen] = useState(false);
   const [coverLetterText, setCoverLetterText] = useState("");
@@ -169,9 +170,11 @@ export default function Home() {
   };
 
   const handleGenerateCoverLetter = () => {
+    setIsGeneratingCoverLetter(true);
     setIsCoverLetterOpen(true);
     setCoverLetterCopied(false);
-    setCoverLetterText(`Dear Hiring Team,
+    window.setTimeout(() => {
+      setCoverLetterText(`Dear Hiring Team,
 
 I am excited to apply for this opportunity. My background centers on building modern web products with React, TypeScript, Next.js, and supporting backend services, with a strong focus on usability, performance, and clean delivery.
 
@@ -181,7 +184,9 @@ What stands out most about this role is the opportunity to contribute to thought
 
 Thank you for your time and consideration.
 `);
-    setHasCoverLetterDraft(true);
+      setHasCoverLetterDraft(true);
+      setIsGeneratingCoverLetter(false);
+    }, 700);
   };
 
   const handleCopyCoverLetter = async () => {
@@ -328,7 +333,7 @@ Thank you for your time and consideration.
                     type="button"
                     onClick={handleTailorCv}
                     disabled={isGenerating}
-                    className="inline-flex min-h-14 flex-1 items-center justify-between rounded-[12px] bg-[#171412] px-5 py-4 text-left text-stone-50 shadow-[0_20px_40px_rgba(20,18,16,0.22)] transition hover:bg-[#211d1a]"
+                    className="inline-flex min-h-14 flex-1 items-center justify-between rounded-[12px] bg-[#171412] px-5 py-4 text-left text-stone-50 shadow-[0_20px_40px_rgba(20,18,16,0.22)] transition hover:bg-[#211d1a] disabled:cursor-not-allowed disabled:opacity-60"
                   >
                     <span className="flex items-center gap-3 text-sm font-medium">
                       <span className="text-[#d8b98f]">
@@ -342,11 +347,14 @@ Thank you for your time and consideration.
                   <button
                     type="button"
                     onClick={handleGenerateCoverLetter}
-                    className="inline-flex min-h-14 items-center gap-3 rounded-[12px] border border-[#e4dacc] bg-white px-5 py-4 text-left text-stone-800 transition hover:bg-[#fdfaf6] sm:min-w-[300px]"
+                    disabled={isGeneratingCoverLetter}
+                    className="inline-flex min-h-14 items-center gap-3 rounded-[12px] border border-[#e4dacc] bg-white px-5 py-4 text-left text-stone-800 transition hover:bg-[#fdfaf6] disabled:cursor-not-allowed disabled:opacity-60 sm:min-w-[300px]"
                   >
                     <FileText className="h-4 w-4" />
                     <span className="text-sm font-medium">
-                      Generate cover letter
+                      {isGeneratingCoverLetter
+                        ? "Generating cover letter..."
+                        : "Generate cover letter"}
                     </span>
                   </button>
                 </div>
@@ -507,10 +515,11 @@ Thank you for your time and consideration.
                 <button
                   type="button"
                   onClick={handleTailorCv}
-                  className="inline-flex min-h-14 items-center justify-center gap-3 rounded-[12px] border border-white/10 bg-white/[0.03] px-5 py-4 text-sm font-medium text-stone-100 transition hover:bg-white/[0.06]"
+                  disabled={isGenerating}
+                  className="inline-flex min-h-14 items-center justify-center gap-3 rounded-[12px] border border-white/10 bg-white/[0.03] px-5 py-4 text-sm font-medium text-stone-100 transition hover:bg-white/[0.06] disabled:cursor-not-allowed disabled:opacity-60"
                 >
                   <RefreshCcw className="h-4 w-4" />
-                  Regenerate
+                  {isGenerating ? "Regenerating..." : "Regenerate"}
                 </button>
                 <button
                   type="button"
@@ -590,7 +599,9 @@ Thank you for your time and consideration.
                   Cover Letter
                 </p>
                 <h3 className="text-lg font-medium text-stone-900">
-                  {hasCoverLetterDraft
+                  {isGeneratingCoverLetter
+                    ? "Generating cover letter"
+                    : hasCoverLetterDraft
                     ? "Cover letter draft"
                     : "Cover letter action is ready"}
                 </h3>
@@ -605,7 +616,14 @@ Thank you for your time and consideration.
               </button>
             </div>
 
-            {hasCoverLetterDraft ? (
+            {isGeneratingCoverLetter ? (
+              <div className="mt-5 rounded-[12px] border border-[#e7ddd1] bg-white p-4">
+                <p className="text-sm leading-7 text-stone-600">
+                  Preparing a cover letter draft from the current role and
+                  profile context...
+                </p>
+              </div>
+            ) : hasCoverLetterDraft ? (
               <div className="mt-5 rounded-[12px] border border-[#e7ddd1] bg-white p-4">
                 <div className="mb-3 flex items-center justify-between gap-3">
                   <p className="text-[0.72rem] font-semibold uppercase tracking-[0.28em] text-[#aa7a40]">
