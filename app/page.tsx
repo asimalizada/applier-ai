@@ -527,9 +527,11 @@ Thank you for your time and consideration.
                 <p className="mb-3 text-[0.72rem] font-semibold uppercase tracking-[0.28em] text-[#aa7a40]">
                   Generated draft
                 </p>
-                <div className="whitespace-pre-wrap text-sm leading-7 text-stone-700">
-                  {coverLetterText}
-                </div>
+                <textarea
+                  value={coverLetterText}
+                  onChange={(event) => setCoverLetterText(event.target.value)}
+                  className="app-scrollbar min-h-[320px] w-full resize-y rounded-[12px] border border-[#e6ddd2] bg-white px-4 py-3 text-sm leading-7 text-stone-700 outline-none transition focus:border-[#cdb79c] focus:ring-4 focus:ring-[#b08145]/10"
+                />
               </div>
             ) : (
               <div className="mt-5 rounded-[12px] border border-[#e7ddd1] bg-white p-4">
