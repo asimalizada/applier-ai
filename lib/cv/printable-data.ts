@@ -1,4 +1,17 @@
-export const printableCvData = {
+export type PrintableCvData = {
+  name: string;
+  role: string;
+  contacts: { label: string; href: string }[];
+  summary: string;
+  skills: { label: string; value: string }[];
+  experience: {
+    heading: string;
+    period: string;
+    bullets: string[];
+  }[];
+};
+
+export const printableCvData: PrintableCvData = {
   name: "ASIM ALIZADA",
   role: "Senior Software Engineer",
   contacts: [

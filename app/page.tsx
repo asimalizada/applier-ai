@@ -15,6 +15,7 @@ import {
   UserRound,
 } from "lucide-react";
 import { CvPrintView } from "@/components/print/CvPrintView";
+import { printableCvData } from "@/lib/cv/printable-data";
 
 const sampleJobDescription = `We're looking for a Senior Frontend Engineer to join our product team.
 You will build performant, accessible web experiences using React and TypeScript.
@@ -190,6 +191,32 @@ Thank you for your time and consideration.
     } catch {
       setCoverLetterCopied(false);
     }
+  };
+
+  const printableViewData = {
+    ...printableCvData,
+    summary,
+    skills: [
+      {
+        label: "Aligned Skills",
+        value: skillsText
+          .split(",")
+          .map((item) => item.trim())
+          .filter(Boolean)
+          .join(" • "),
+      },
+    ],
+    experience: printableCvData.experience.map((item, index) =>
+      index === 0
+        ? {
+            ...item,
+            bullets: experienceText
+              .split("\n")
+              .map((entry) => entry.trim())
+              .filter(Boolean),
+          }
+        : item,
+    ),
   };
 
   return (
@@ -582,7 +609,7 @@ Thank you for your time and consideration.
         </div>
 
         <div className="overflow-auto rounded-[14px] border border-[#e8dfd4] bg-[#f5f1ea] p-4">
-          <CvPrintView />
+          <CvPrintView data={printableViewData} />
         </div>
       </section>
     </main>
