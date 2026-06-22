@@ -116,6 +116,7 @@ export default function Home() {
   const [isCoverLetterOpen, setIsCoverLetterOpen] = useState(false);
   const [coverLetterText, setCoverLetterText] = useState("");
   const [hasCoverLetterDraft, setHasCoverLetterDraft] = useState(false);
+  const [coverLetterCopied, setCoverLetterCopied] = useState(false);
   const [jobDescription, setJobDescription] = useState(sampleJobDescription);
   const [summary, setSummary] = useState(summaryText);
   const [skillsText, setSkillsText] = useState(skillItems.join(", "));
@@ -166,6 +167,7 @@ export default function Home() {
 
   const handleGenerateCoverLetter = () => {
     setIsCoverLetterOpen(true);
+    setCoverLetterCopied(false);
     setCoverLetterText(`Dear Hiring Team,
 
 I am excited to apply for this opportunity. My background centers on building modern web products with React, TypeScript, Next.js, and supporting backend services, with a strong focus on usability, performance, and clean delivery.
@@ -177,6 +179,16 @@ What stands out most about this role is the opportunity to contribute to thought
 Thank you for your time and consideration.
 `);
     setHasCoverLetterDraft(true);
+  };
+
+  const handleCopyCoverLetter = async () => {
+    try {
+      await navigator.clipboard.writeText(coverLetterText);
+      setCoverLetterCopied(true);
+      window.setTimeout(() => setCoverLetterCopied(false), 1800);
+    } catch {
+      setCoverLetterCopied(false);
+    }
   };
 
   return (
@@ -524,9 +536,19 @@ Thank you for your time and consideration.
 
             {hasCoverLetterDraft ? (
               <div className="mt-5 rounded-[12px] border border-[#e7ddd1] bg-white p-4">
-                <p className="mb-3 text-[0.72rem] font-semibold uppercase tracking-[0.28em] text-[#aa7a40]">
-                  Generated draft
-                </p>
+                <div className="mb-3 flex items-center justify-between gap-3">
+                  <p className="text-[0.72rem] font-semibold uppercase tracking-[0.28em] text-[#aa7a40]">
+                    Generated draft
+                  </p>
+                  <button
+                    type="button"
+                    onClick={handleCopyCoverLetter}
+                    className="inline-flex items-center gap-2 rounded-[10px] border border-[#e4dbcf] bg-[#faf6f1] px-3 py-1.5 text-sm font-medium text-stone-700 transition hover:bg-white"
+                  >
+                    <Clipboard className="h-4 w-4" />
+                    {coverLetterCopied ? "Copied" : "Copy"}
+                  </button>
+                </div>
                 <textarea
                   value={coverLetterText}
                   onChange={(event) => setCoverLetterText(event.target.value)}
