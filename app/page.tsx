@@ -114,6 +114,8 @@ export default function Home() {
   const [isGenerating, setIsGenerating] = useState(false);
   const [generationError, setGenerationError] = useState<string | null>(null);
   const [isCoverLetterOpen, setIsCoverLetterOpen] = useState(false);
+  const [coverLetterText, setCoverLetterText] = useState("");
+  const [hasCoverLetterDraft, setHasCoverLetterDraft] = useState(false);
   const [jobDescription, setJobDescription] = useState(sampleJobDescription);
   const [summary, setSummary] = useState(summaryText);
   const [skillsText, setSkillsText] = useState(skillItems.join(", "));
@@ -160,6 +162,21 @@ export default function Home() {
       setHasPreview(true);
       setIsGenerating(false);
     }, 700);
+  };
+
+  const handleGenerateCoverLetter = () => {
+    setIsCoverLetterOpen(true);
+    setCoverLetterText(`Dear Hiring Team,
+
+I am excited to apply for this opportunity. My background centers on building modern web products with React, TypeScript, Next.js, and supporting backend services, with a strong focus on usability, performance, and clean delivery.
+
+Across recent roles, I have worked on scalable product experiences, cross-functional collaboration, and high-impact feature delivery. That experience aligns well with teams looking for engineers who can move confidently between product thinking, implementation quality, and execution.
+
+What stands out most about this role is the opportunity to contribute to thoughtful user-facing software while bringing a strong sense of ownership to the work. I would be glad to bring that mindset and technical foundation to your team.
+
+Thank you for your time and consideration.
+`);
+    setHasCoverLetterDraft(true);
   };
 
   return (
@@ -242,7 +259,7 @@ export default function Home() {
 
                   <button
                     type="button"
-                    onClick={() => setIsCoverLetterOpen(true)}
+                    onClick={handleGenerateCoverLetter}
                     className="inline-flex min-h-14 items-center gap-3 rounded-[12px] border border-[#e4dacc] bg-white px-5 py-4 text-left text-stone-800 transition hover:bg-[#fdfaf6] sm:min-w-[300px]"
                   >
                     <FileText className="h-4 w-4" />
@@ -490,7 +507,9 @@ export default function Home() {
                   Cover Letter
                 </p>
                 <h3 className="text-lg font-medium text-stone-900">
-                  Cover letter action is ready
+                  {hasCoverLetterDraft
+                    ? "Cover letter draft"
+                    : "Cover letter action is ready"}
                 </h3>
               </div>
 
@@ -503,12 +522,24 @@ export default function Home() {
               </button>
             </div>
 
-            <div className="mt-5 rounded-[12px] border border-[#e7ddd1] bg-white p-4">
-              <p className="text-sm leading-7 text-stone-600">
-                This step only wires the cover letter action into the interface.
-                Generation logic will be added in the next phase steps.
-              </p>
-            </div>
+            {hasCoverLetterDraft ? (
+              <div className="mt-5 rounded-[12px] border border-[#e7ddd1] bg-white p-4">
+                <p className="mb-3 text-[0.72rem] font-semibold uppercase tracking-[0.28em] text-[#aa7a40]">
+                  Generated draft
+                </p>
+                <div className="whitespace-pre-wrap text-sm leading-7 text-stone-700">
+                  {coverLetterText}
+                </div>
+              </div>
+            ) : (
+              <div className="mt-5 rounded-[12px] border border-[#e7ddd1] bg-white p-4">
+                <p className="text-sm leading-7 text-stone-600">
+                  This step only wires the cover letter action into the
+                  interface. Generation logic will be added in the next phase
+                  steps.
+                </p>
+              </div>
+            )}
           </div>
         </div>
       ) : null}
