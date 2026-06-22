@@ -112,6 +112,7 @@ function SkillChip({ label }: LabelProps) {
 export default function Home() {
   const [hasPreview, setHasPreview] = useState(false);
   const [isGenerating, setIsGenerating] = useState(false);
+  const [generationError, setGenerationError] = useState<string | null>(null);
   const [jobDescription, setJobDescription] = useState(sampleJobDescription);
   const [summary, setSummary] = useState(summaryText);
   const [skillsText, setSkillsText] = useState(skillItems.join(", "));
@@ -136,13 +137,23 @@ export default function Home() {
       const text = await navigator.clipboard.readText();
       if (text.trim()) {
         setJobDescription(text);
+        setGenerationError(null);
       }
     } catch {
       setJobDescription(sampleJobDescription);
+      setGenerationError(null);
     }
   };
 
   const handleTailorCv = () => {
+    if (!jobDescription.trim()) {
+      setGenerationError("Add a job description before tailoring the CV.");
+      setHasPreview(false);
+      setIsGenerating(false);
+      return;
+    }
+
+    setGenerationError(null);
     setIsGenerating(true);
     window.setTimeout(() => {
       setHasPreview(true);
@@ -203,6 +214,12 @@ export default function Home() {
                   onChange={(event) => setJobDescription(event.target.value)}
                   className="app-scrollbar min-h-[320px] w-full resize-y rounded-[12px] border border-[#e6ddd2] bg-white px-5 py-4 text-[0.95rem] leading-7 text-stone-700 outline-none shadow-[inset_0_1px_0_rgba(255,255,255,0.7)] transition placeholder:text-stone-400 focus:border-[#cdb79c] focus:ring-4 focus:ring-[#b08145]/10 lg:min-h-[380px]"
                 />
+
+                {generationError ? (
+                  <p className="mt-3 rounded-[10px] border border-[#e5c8c5] bg-[#fff4f2] px-3.5 py-2.5 text-sm text-[#9a443e]">
+                    {generationError}
+                  </p>
+                ) : null}
               </div>
 
               <div className="space-y-3 border-t border-[#eee4d8] pt-1">
@@ -244,7 +261,9 @@ export default function Home() {
                 </p>
                 <div className="flex flex-wrap items-center gap-3">
                   <h2 className="font-editorial text-3xl leading-none tracking-[-0.05em] text-white">
-                    {isGenerating
+                    {generationError
+                      ? "Generation blocked"
+                      : isGenerating
                       ? "Generating draft"
                       : previewReady
                         ? "Draft ready"
@@ -252,7 +271,9 @@ export default function Home() {
                   </h2>
                   <span
                     className={`inline-flex items-center gap-2 rounded-[10px] border px-3 py-1.5 text-sm ${
-                      isGenerating
+                      generationError
+                        ? "border-[#6d302c] bg-[#2a1717] text-[#f2b2aa]"
+                        : isGenerating
                         ? "border-[#6e603f] bg-[#2b251c] text-[#d4bf8f]"
                         : previewReady
                         ? "border-[#26653b] bg-[#163421] text-[#7fe59f]"
@@ -261,20 +282,30 @@ export default function Home() {
                   >
                     <span
                       className={`h-2 w-2 rounded-full ${
-                        isGenerating
+                        generationError
+                          ? "bg-[#e07d72]"
+                          : isGenerating
                           ? "bg-[#d0b37a]"
                           : previewReady
                             ? "bg-[#3dd273]"
                             : "bg-stone-500"
                       }`}
                     />
-                    {isGenerating
+                    {generationError
+                      ? "Error"
+                      : isGenerating
                       ? "Working"
                       : previewReady
                         ? "Ready"
                         : "Standby"}
                   </span>
                 </div>
+
+                {generationError ? (
+                  <p className="text-sm leading-7 text-[#d9a29b]">
+                    Fix the input and run the tailoring flow again.
+                  </p>
+                ) : null}
               </div>
 
               <div className="app-scrollbar lg:min-h-0 lg:flex-1 lg:overflow-auto lg:pr-1">
