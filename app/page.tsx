@@ -113,6 +113,7 @@ export default function Home() {
   const [hasPreview, setHasPreview] = useState(false);
   const [isGenerating, setIsGenerating] = useState(false);
   const [generationError, setGenerationError] = useState<string | null>(null);
+  const [isCoverLetterOpen, setIsCoverLetterOpen] = useState(false);
   const [jobDescription, setJobDescription] = useState(sampleJobDescription);
   const [summary, setSummary] = useState(summaryText);
   const [skillsText, setSkillsText] = useState(skillItems.join(", "));
@@ -241,6 +242,7 @@ export default function Home() {
 
                   <button
                     type="button"
+                    onClick={() => setIsCoverLetterOpen(true)}
                     className="inline-flex min-h-14 items-center gap-3 rounded-[12px] border border-[#e4dacc] bg-white px-5 py-4 text-left text-stone-800 transition hover:bg-[#fdfaf6] sm:min-w-[300px]"
                   >
                     <FileText className="h-4 w-4" />
@@ -474,6 +476,38 @@ export default function Home() {
               >
                 Save
               </button>
+            </div>
+          </div>
+        </div>
+      ) : null}
+
+      {isCoverLetterOpen ? (
+        <div className="fixed inset-0 z-50 flex items-center justify-center bg-stone-950/28 px-4 py-6 backdrop-blur-[2px]">
+          <div className="w-full max-w-2xl rounded-[18px] border border-[#e3d8ca] bg-[#fffdfa] p-5 shadow-[0_30px_80px_rgba(32,24,17,0.22)] sm:p-6">
+            <div className="flex items-start justify-between gap-4">
+              <div className="space-y-1">
+                <p className="text-[0.72rem] font-semibold uppercase tracking-[0.32em] text-[#aa7a40]">
+                  Cover Letter
+                </p>
+                <h3 className="text-lg font-medium text-stone-900">
+                  Cover letter action is ready
+                </h3>
+              </div>
+
+              <button
+                type="button"
+                onClick={() => setIsCoverLetterOpen(false)}
+                className="rounded-[10px] border border-[#e4dbcf] px-3 py-1.5 text-sm text-stone-600 transition hover:bg-[#faf6f1]"
+              >
+                Close
+              </button>
+            </div>
+
+            <div className="mt-5 rounded-[12px] border border-[#e7ddd1] bg-white p-4">
+              <p className="text-sm leading-7 text-stone-600">
+                This step only wires the cover letter action into the interface.
+                Generation logic will be added in the next phase steps.
+              </p>
             </div>
           </div>
         </div>
