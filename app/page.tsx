@@ -146,16 +146,22 @@ export default function Home() {
       if (text.trim()) {
         setJobDescription(text);
         setGenerationError(null);
+      } else {
+        setGenerationError("Clipboard is empty. Paste a role manually or try again.");
       }
     } catch {
       setJobDescription(sampleJobDescription);
-      setGenerationError(null);
+      setGenerationError(
+        "Clipboard access was unavailable. A sample role was inserted instead.",
+      );
     }
   };
 
   const handleTailorCv = () => {
     if (!jobDescription.trim()) {
-      setGenerationError("Add a job description before tailoring the CV.");
+      setGenerationError(
+        "A job description is required before Applier AI can tailor the CV.",
+      );
       setHasPreview(false);
       setIsGenerating(false);
       return;
@@ -413,7 +419,7 @@ Thank you for your time and consideration.
 
                 {generationError ? (
                   <p className="text-sm leading-7 text-[#d9a29b]">
-                    Fix the input and run the tailoring flow again.
+                    Review the input, then retry the tailoring flow.
                   </p>
                 ) : null}
               </div>
