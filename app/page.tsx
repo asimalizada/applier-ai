@@ -274,11 +274,11 @@ Thank you for your time and consideration.
 
   return (
     <main className="min-h-screen bg-[#f7f3ee] px-4 py-4 text-stone-900 sm:px-5 lg:h-screen lg:overflow-hidden lg:px-6 lg:py-5">
-      <div className="mx-auto flex max-w-[1440px] flex-col gap-4 lg:h-full">
-        <div className="grid gap-4 lg:h-full lg:grid-cols-[minmax(0,1.08fr)_minmax(420px,0.92fr)]">
+      <div className="mx-auto flex max-w-[1440px] flex-col gap-5 lg:h-full">
+        <div className="grid gap-5 lg:h-full lg:grid-cols-[minmax(0,1.08fr)_minmax(420px,0.92fr)]">
           <section className="rounded-[18px] border border-[#e5dbce] bg-[linear-gradient(180deg,#fffdfa_0%,#fcf8f2_100%)] p-5 shadow-[0_24px_60px_rgba(50,36,20,0.08)] sm:p-6 lg:flex lg:min-h-0 lg:flex-col">
-            <div className="space-y-4 lg:flex lg:min-h-0 lg:flex-col">
-              <div className="flex flex-col gap-3 border-b border-[#eee4d8] pb-4 sm:flex-row sm:items-center sm:justify-between">
+            <div className="space-y-5 lg:flex lg:min-h-0 lg:flex-col">
+              <div className="flex flex-col gap-3 border-b border-[#eee4d8] pb-5 sm:flex-row sm:items-center sm:justify-between">
                 <div className="space-y-1">
                   <p className="text-[0.92rem] font-semibold uppercase tracking-[0.28em] text-[#aa7a40]">
                     Applier AI
@@ -296,7 +296,7 @@ Thank you for your time and consideration.
               </div>
 
               <div className="rounded-[14px] border border-[#e7ddd1] bg-[#fffdfa] p-4 shadow-[0_14px_34px_rgba(30,24,18,0.04)] lg:flex lg:min-h-0 lg:flex-col">
-                <div className="mb-4 flex flex-col gap-3 sm:flex-row sm:items-center sm:justify-between">
+                <div className="mb-5 flex flex-col gap-3 sm:flex-row sm:items-center sm:justify-between">
                   <h2 className="text-lg font-medium tracking-[-0.02em] text-stone-900">
                     Target role
                   </h2>
@@ -334,7 +334,7 @@ Thank you for your time and consideration.
                 ) : null}
               </div>
 
-              <div className="space-y-3 border-t border-[#eee4d8] pt-1">
+              <div className="space-y-3 border-t border-[#eee4d8] pt-2">
                 <div className="flex flex-col gap-3 sm:flex-row">
                   <button
                     type="button"
@@ -371,7 +371,7 @@ Thank you for your time and consideration.
 
           <aside className="rounded-[18px] border border-[#2b2723] bg-[linear-gradient(180deg,#171513_0%,#121110_100%)] p-5 text-stone-100 shadow-[0_28px_80px_rgba(22,19,16,0.34)] sm:p-6 lg:flex lg:min-h-0 lg:flex-col">
             <div className="space-y-5 lg:flex lg:min-h-0 lg:flex-col">
-              <div className="space-y-3">
+              <div className="space-y-4">
                 <p className="text-[0.78rem] font-semibold uppercase tracking-[0.28em] text-stone-400">
                   Preview
                 </p>
@@ -426,7 +426,7 @@ Thank you for your time and consideration.
 
               <div className="app-scrollbar lg:min-h-0 lg:flex-1 lg:overflow-auto lg:pr-1">
                 {previewReady ? (
-                  <div className="space-y-4">
+                  <div className="space-y-4 pb-1">
                     <PreviewSection
                       icon={<UserRound className="h-4 w-4" />}
                       title="Summary"
@@ -518,7 +518,7 @@ Thank you for your time and consideration.
                 )}
               </div>
 
-              <div className="grid gap-3 pt-2 sm:grid-cols-2">
+              <div className="grid gap-3 pt-3 sm:grid-cols-2">
                 <button
                   type="button"
                   onClick={handleTailorCv}
@@ -673,7 +673,7 @@ Thank you for your time and consideration.
           </div>
         </div>
 
-        <div className="overflow-auto rounded-[14px] border border-[#e8dfd4] bg-[#f5f1ea] p-4">
+        <div className="overflow-auto rounded-[14px] border border-[#e8dfd4] bg-[#f5f1ea] p-5">
           <div ref={printRootRef}>
             <CvPrintView data={printableViewData} />
           </div>
