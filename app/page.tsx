@@ -317,6 +317,7 @@ Thank you for your time and consideration.
                   name="jobDescription"
                   value={jobDescription}
                   onChange={(event) => setJobDescription(event.target.value)}
+                  placeholder="Paste the target job description here..."
                   className="app-scrollbar min-h-[320px] w-full resize-y rounded-[12px] border border-[#e6ddd2] bg-white px-5 py-4 text-[0.95rem] leading-7 text-stone-700 outline-none shadow-[inset_0_1px_0_rgba(255,255,255,0.7)] transition placeholder:text-stone-400 focus:border-[#cdb79c] focus:ring-4 focus:ring-[#b08145]/10 lg:min-h-[380px]"
                 />
 
@@ -498,14 +499,14 @@ Thank you for your time and consideration.
                   </div>
                 ) : (
                   <div className="rounded-[14px] border border-dashed border-white/10 bg-white/[0.03] p-7">
-                    <div className="space-y-4">
-                      <div className="h-3 w-20 rounded-full bg-white/10" />
-                      <div className="h-3 w-40 rounded-full bg-white/8" />
-                      <div className="space-y-2 pt-2">
-                        <div className="h-2.5 w-full rounded-full bg-white/6" />
-                        <div className="h-2.5 w-[92%] rounded-full bg-white/6" />
-                        <div className="h-2.5 w-[76%] rounded-full bg-white/6" />
-                      </div>
+                    <div className="space-y-3">
+                      <p className="text-[0.72rem] font-semibold uppercase tracking-[0.28em] text-stone-500">
+                        Empty preview
+                      </p>
+                      <p className="max-w-md text-sm leading-7 text-stone-400">
+                        Run the tailoring flow to populate the draft summary,
+                        skills, and experience sections here.
+                      </p>
                     </div>
                   </div>
                 )}
@@ -647,9 +648,7 @@ Thank you for your time and consideration.
             ) : (
               <div className="mt-5 rounded-[12px] border border-[#e7ddd1] bg-white p-4">
                 <p className="text-sm leading-7 text-stone-600">
-                  This step only wires the cover letter action into the
-                  interface. Generation logic will be added in the next phase
-                  steps.
+                  Generate a cover letter to open the first editable draft here.
                 </p>
               </div>
             )}
