@@ -3,7 +3,6 @@
 import { useRef, useState } from "react";
 import {
   ArrowRight,
-  BadgeCheck,
   BriefcaseBusiness,
   Clipboard,
   CodeXml,
@@ -11,11 +10,18 @@ import {
   Pencil,
   RefreshCcw,
   Sparkles,
-  Star,
   UserRound,
 } from "lucide-react";
 import { CvPrintView } from "@/components/print/CvPrintView";
 import { printableCvData } from "@/lib/cv/printable-data";
+import {
+  baseCv,
+  cloneExperienceEntries,
+  cloneSkillGroups,
+  ensureBulletPrefix,
+  formatExperienceHeading,
+  formatBaseCvForAi,
+} from "@/lib/cv/base-cv";
 
 const sampleJobDescription = `We're looking for a Senior Frontend Engineer to join our product team.
 You will build performant, accessible web experiences using React and TypeScript.
@@ -27,36 +33,6 @@ Requirements:
 - Experience with state management, testing, and performance optimization
 - Comfortable working with REST/GraphQL APIs
 - Strong communication and ownership mindset`;
-
-const summaryText =
-  "Senior Frontend Engineer with 6+ years of experience building scalable, accessible web applications using React, TypeScript, and Next.js. Proven track record of delivering high-impact features that improve performance, usability, and business outcomes.";
-
-const skillItems = [
-  "TypeScript",
-  "React",
-  "Next.js",
-  "JavaScript",
-  "HTML/CSS",
-  "Node.js",
-  "REST APIs",
-  "GraphQL",
-  "Git",
-  "Jest",
-  "PostgreSQL",
-];
-
-const experienceItems = [
-  "Built a component library adopted across 8 products, reducing development time by 35%.",
-  "Improved Core Web Vitals by 40% through code splitting, lazy loading, and bundle optimization.",
-  "Led migration to TypeScript and Next.js, increasing code quality and deployment velocity.",
-  "Collaborated with design and backend teams to deliver features used by 2M+ monthly active users.",
-];
-
-const achievementItems = [
-  "Reduced page load time by 45%, improving conversion by 12%.",
-  "Increased test coverage from 48% to 82%.",
-  "Shipped 20+ features with zero Sev-1 incidents.",
-];
 
 type PreviewSectionProps = {
   icon: React.ReactNode;
@@ -115,28 +91,22 @@ export default function Home() {
   const printRootRef = useRef<HTMLDivElement | null>(null);
   const [hasPreview, setHasPreview] = useState(false);
   const [isGenerating, setIsGenerating] = useState(false);
+  const [isExportingPdf, setIsExportingPdf] = useState(false);
   const [isGeneratingCoverLetter, setIsGeneratingCoverLetter] = useState(false);
   const [generationError, setGenerationError] = useState<string | null>(null);
   const [isCoverLetterOpen, setIsCoverLetterOpen] = useState(false);
+  const [coverLetterError, setCoverLetterError] = useState<string | null>(null);
   const [coverLetterText, setCoverLetterText] = useState("");
   const [hasCoverLetterDraft, setHasCoverLetterDraft] = useState(false);
   const [coverLetterCopied, setCoverLetterCopied] = useState(false);
   const [jobDescription, setJobDescription] = useState(sampleJobDescription);
-  const [summary, setSummary] = useState(summaryText);
-  const [skillsText, setSkillsText] = useState(skillItems.join(", "));
-  const [experienceText, setExperienceText] = useState(
-    experienceItems.join("\n"),
+  const [summary, setSummary] = useState(baseCv.summary);
+  const [skills, setSkills] = useState(() => cloneSkillGroups(baseCv.skills));
+  const [experience, setExperience] = useState(
+    () => cloneExperienceEntries(baseCv.experience),
   );
   const [isProfileOpen, setIsProfileOpen] = useState(false);
-  const [profileText, setProfileText] = useState(
-    [
-      "Frontend Engineer",
-      "TypeScript",
-      "React / Next.js",
-      "Node.js",
-      "PostgreSQL",
-    ].join("\n"),
-  );
+  const [profileText, setProfileText] = useState(formatBaseCvForAi(baseCv));
 
   const previewReady = hasPreview;
 
@@ -169,30 +139,97 @@ export default function Home() {
 
     setGenerationError(null);
     setIsGenerating(true);
-    window.setTimeout(() => {
-      setHasPreview(true);
-      setIsGenerating(false);
-    }, 700);
+    void fetch("/api/tailor", {
+      method: "POST",
+      headers: {
+        "Content-Type": "application/json",
+      },
+      body: JSON.stringify({
+        jobDescription,
+        currentSummary: summary,
+        currentSkills: skills,
+        currentExperience: experience,
+      }),
+    })
+      .then(async (response) => {
+        const payload = (await response.json()) as
+          | {
+              draft?: {
+                summary: string;
+                skills: typeof baseCv.skills;
+                experience: typeof baseCv.experience;
+              };
+              error?: string;
+            }
+          | undefined;
+
+        if (!response.ok || !payload?.draft) {
+          throw new Error(payload?.error || "Tailoring request failed.");
+        }
+
+        setSummary(payload.draft.summary);
+        setSkills(payload.draft.skills);
+        setExperience(payload.draft.experience);
+        setHasPreview(true);
+      })
+      .catch((error: unknown) => {
+        setHasPreview(false);
+        setGenerationError(
+          error instanceof Error
+            ? error.message
+            : "Tailoring request failed unexpectedly.",
+        );
+      })
+      .finally(() => {
+        setIsGenerating(false);
+      });
   };
 
   const handleGenerateCoverLetter = () => {
+    const currentSkills = skills.flatMap((group) => group.items);
+    const currentExperience = experience.flatMap((entry) => entry.bullets);
+
     setIsGeneratingCoverLetter(true);
     setIsCoverLetterOpen(true);
     setCoverLetterCopied(false);
-    window.setTimeout(() => {
-      setCoverLetterText(`Dear Hiring Team,
+    setCoverLetterError(null);
+    setHasCoverLetterDraft(false);
 
-I am excited to apply for this opportunity. My background centers on building modern web products with React, TypeScript, Next.js, and supporting backend services, with a strong focus on usability, performance, and clean delivery.
+    void fetch("/api/cover-letter", {
+      method: "POST",
+      headers: {
+        "Content-Type": "application/json",
+      },
+      body: JSON.stringify({
+        baseProfile: profileText,
+        jobDescription,
+        summary,
+        skills: currentSkills,
+        experience: currentExperience,
+      }),
+    })
+      .then(async (response) => {
+        const payload = (await response.json()) as
+          | { coverLetter?: string; error?: string }
+          | undefined;
 
-Across recent roles, I have worked on scalable product experiences, cross-functional collaboration, and high-impact feature delivery. That experience aligns well with teams looking for engineers who can move confidently between product thinking, implementation quality, and execution.
+        if (!response.ok || !payload?.coverLetter) {
+          throw new Error(payload?.error || "Cover letter request failed.");
+        }
 
-What stands out most about this role is the opportunity to contribute to thoughtful user-facing software while bringing a strong sense of ownership to the work. I would be glad to bring that mindset and technical foundation to your team.
-
-Thank you for your time and consideration.
-`);
-      setHasCoverLetterDraft(true);
-      setIsGeneratingCoverLetter(false);
-    }, 700);
+        setCoverLetterText(payload.coverLetter);
+        setHasCoverLetterDraft(true);
+      })
+      .catch((error: unknown) => {
+        setCoverLetterError(
+          error instanceof Error
+            ? error.message
+            : "Cover letter request failed unexpectedly.",
+        );
+      })
+      .finally(() => {
+        setIsGeneratingCoverLetter(false);
+      });
   };
 
   const handleCopyCoverLetter = async () => {
@@ -206,70 +243,59 @@ Thank you for your time and consideration.
   };
 
   const handleExportPdf = () => {
-    const printRoot = printRootRef.current;
+    setGenerationError(null);
+    setIsExportingPdf(true);
 
-    if (!printRoot) {
-      return;
-    }
+    void fetch("/api/export-pdf", {
+      method: "POST",
+      headers: {
+        "Content-Type": "application/json",
+      },
+      body: JSON.stringify({
+        summary,
+        skills,
+        experience,
+      }),
+    })
+      .then(async (response) => {
+        if (!response.ok) {
+          const payload = (await response.json()) as
+            | { error?: string }
+            | undefined;
 
-    const printWindow = window.open("", "_blank", "width=1100,height=900");
+          throw new Error(payload?.error || "PDF export failed.");
+        }
 
-    if (!printWindow) {
-      return;
-    }
-
-    const styles = Array.from(document.querySelectorAll("style, link[rel='stylesheet']"))
-      .map((node) => node.outerHTML)
-      .join("\n");
-
-    printWindow.document.write(`
-      <!DOCTYPE html>
-      <html lang="en">
-        <head>
-          <meta charset="utf-8" />
-          <title>Applier AI CV Export</title>
-          ${styles}
-          <style>
-            body {
-              margin: 0;
-              background: #ffffff;
-            }
-          </style>
-        </head>
-        <body>
-          ${printRoot.outerHTML}
-        </body>
-      </html>
-    `);
-    printWindow.document.close();
-    printWindow.focus();
-    printWindow.print();
+        const blob = await response.blob();
+        const url = window.URL.createObjectURL(blob);
+        const link = document.createElement("a");
+        link.href = url;
+        link.download = "Asim Alizada - CV.pdf";
+        document.body.appendChild(link);
+        link.click();
+        link.remove();
+        window.URL.revokeObjectURL(url);
+      })
+      .catch((error: unknown) => {
+        setGenerationError(
+          error instanceof Error
+            ? error.message
+            : "PDF export failed unexpectedly.",
+        );
+      })
+      .finally(() => {
+        setIsExportingPdf(false);
+      });
   };
 
   const printableViewData = {
     ...printableCvData,
     summary,
-    skills: [
-      {
-        label: "Aligned Skills",
-        value: skillsText
-          .split(",")
-          .map((item) => item.trim())
-          .filter(Boolean)
-          .join(" • "),
-      },
-    ],
-    experience: printableCvData.experience.map((item, index) =>
-      index === 0
-        ? {
-            ...item,
-            bullets: experienceText
-              .split("\n")
-              .map((entry) => entry.trim())
-              .filter(Boolean),
-          }
-        : item,
-    ),
+    skills: skills.map((group) => ({
+      label: group.label,
+      value: group.items.join(" • "),
+    })),
+    experience,
   };
 
   return (
@@ -443,18 +469,37 @@ Thank you for your time and consideration.
                       title="Skills"
                     >
                       <div className="space-y-3">
-                        <textarea
-                          value={skillsText}
-                          onChange={(event) => setSkillsText(event.target.value)}
-                          className="app-scrollbar min-h-[120px] w-full resize-y rounded-[10px] border border-white/8 bg-[#211d1a] px-4 py-3 text-[0.95rem] leading-7 text-stone-200 outline-none transition focus:border-[#4a433d] focus:ring-2 focus:ring-white/5"
-                        />
+                        {skills.map((group, index) => (
+                          <div key={group.label} className="space-y-2">
+                            <p className="text-sm font-medium text-stone-300">
+                              {group.label}
+                            </p>
+                            <textarea
+                              value={group.items.join(" • ")}
+                              onChange={(event) =>
+                                setSkills((current) =>
+                                  current.map((item, itemIndex) =>
+                                    itemIndex === index
+                                      ? {
+                                          ...item,
+                                          items: event.target.value
+                                            .split("•")
+                                            .map((skill) => skill.trim())
+                                            .filter(Boolean),
+                                        }
+                                      : item,
+                                  ),
+                                )
+                              }
+                              className="app-scrollbar min-h-[84px] w-full resize-y rounded-[10px] border border-white/8 bg-[#211d1a] px-4 py-3 text-[0.95rem] leading-7 text-stone-200 outline-none transition focus:border-[#4a433d] focus:ring-2 focus:ring-white/5"
+                            />
+                          </div>
+                        ))}
                         <div className="flex flex-wrap gap-2.5">
-                          {skillsText
-                            .split(",")
-                            .map((item) => item.trim())
-                            .filter(Boolean)
+                          {skills
+                            .flatMap((group) => group.items)
                             .map((item) => (
-                          <SkillChip key={item} label={item} />
+                              <SkillChip key={item} label={item} />
                             ))}
                         </div>
                       </div>
@@ -464,43 +509,44 @@ Thank you for your time and consideration.
                       icon={<BriefcaseBusiness className="h-4 w-4" />}
                       title="Experience"
                     >
-                      <div className="space-y-3">
-                        <div className="flex flex-wrap items-center gap-3 text-sm text-stone-300">
-                          <span className="text-base font-medium text-stone-100">
-                            Senior Frontend Engineer
-                          </span>
-                          <span className="text-stone-500">•</span>
-                          <span>Acme Inc.</span>
-                          <span className="text-stone-500">•</span>
-                          <span>2021 – Present</span>
-                        </div>
-                        <textarea
-                          value={experienceText}
-                          onChange={(event) =>
-                            setExperienceText(event.target.value)
-                          }
-                          className="app-scrollbar min-h-[220px] w-full resize-y rounded-[10px] border border-white/8 bg-[#211d1a] px-4 py-3 text-[0.95rem] leading-7 text-stone-200 outline-none transition focus:border-[#4a433d] focus:ring-2 focus:ring-white/5"
-                        />
-                      </div>
-                    </PreviewSection>
-
-                    <PreviewSection
-                      icon={<Star className="h-4 w-4" />}
-                      title="Selected achievements"
-                    >
-                      <ul className="space-y-3">
-                        {achievementItems.map((item) => (
-                          <li
-                            key={item}
-                            className="flex items-start gap-3 text-[0.95rem] leading-7 text-stone-200"
+                      <div className="space-y-4">
+                        {experience.map((entry, index) => (
+                          <div
+                            key={`${entry.title}-${entry.company}-${entry.period}`}
+                            className="space-y-3 rounded-[10px] border border-white/8 bg-[#211d1a] p-4"
                           >
-                            <span className="mt-1 text-[#41d07b]">
-                              <BadgeCheck className="h-4 w-4" />
-                            </span>
-                            <span>{item}</span>
-                          </li>
+                            <div className="space-y-1">
+                              <p className="text-base font-medium text-stone-100">
+                                {formatExperienceHeading(entry)}
+                              </p>
+                              <p className="text-sm text-stone-400">
+                                {entry.period}
+                              </p>
+                            </div>
+                            <textarea
+                              value={entry.bullets.join("\n")}
+                              onChange={(event) =>
+                                setExperience((current) =>
+                                  current.map((item, itemIndex) =>
+                                    itemIndex === index
+                                      ? {
+                                          ...item,
+                                          bullets: event.target.value
+                                            .split("\n")
+                                            .map((bullet) =>
+                                              ensureBulletPrefix(bullet),
+                                            )
+                                            .filter(Boolean),
+                                        }
+                                      : item,
+                                  ),
+                                )
+                              }
+                              className="app-scrollbar min-h-[156px] w-full resize-y rounded-[10px] border border-white/8 bg-[#1b1816] px-4 py-3 text-[0.95rem] leading-7 text-stone-200 outline-none transition focus:border-[#4a433d] focus:ring-2 focus:ring-white/5"
+                            />
+                          </div>
                         ))}
-                      </ul>
+                      </div>
                     </PreviewSection>
                   </div>
                 ) : (
@@ -531,10 +577,11 @@ Thank you for your time and consideration.
                 <button
                   type="button"
                   onClick={handleExportPdf}
-                  className="inline-flex min-h-14 items-center justify-center gap-3 rounded-[12px] bg-[linear-gradient(180deg,#b78a52_0%,#9f7340_100%)] px-5 py-4 text-sm font-medium text-white shadow-[0_20px_35px_rgba(164,119,61,0.3)] transition hover:brightness-105"
+                  disabled={isExportingPdf}
+                  className="inline-flex min-h-14 items-center justify-center gap-3 rounded-[12px] bg-[linear-gradient(180deg,#b78a52_0%,#9f7340_100%)] px-5 py-4 text-sm font-medium text-white shadow-[0_20px_35px_rgba(164,119,61,0.3)] transition hover:brightness-105 disabled:cursor-not-allowed disabled:opacity-60"
                 >
                   <FileText className="h-4 w-4" />
-                  Export CV PDF
+                  {isExportingPdf ? "Exporting PDF..." : "Export CV PDF"}
                 </button>
               </div>
             </div>
@@ -629,6 +676,12 @@ Thank you for your time and consideration.
                   Preparing a draft from the current role and profile context...
                 </p>
               </div>
+            ) : coverLetterError ? (
+              <div className="mt-5 rounded-[12px] border border-[#e5c8c5] bg-[#fff4f2] p-4">
+                <p className="text-sm leading-7 text-[#9a443e]">
+                  {coverLetterError}
+                </p>
+              </div>
             ) : hasCoverLetterDraft ? (
               <div className="mt-5 rounded-[12px] border border-[#e7ddd1] bg-white p-4">
                 <div className="mb-3 flex items-center justify-between gap-3">
@@ -640,7 +693,7 @@ Thank you for your time and consideration.
                     onClick={handleCopyCoverLetter}
                     className="inline-flex items-center gap-2 rounded-[10px] border border-[#e4dbcf] bg-[#faf6f1] px-3 py-1.5 text-sm font-medium text-stone-700 transition hover:bg-white"
                   >
-                  <Clipboard className="h-4 w-4" />
+                    <Clipboard className="h-4 w-4" />
                     {coverLetterCopied ? "Copied" : "Copy text"}
                   </button>
                 </div>

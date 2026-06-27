@@ -14,6 +14,7 @@ type OllamaChatResponse = {
 export type OllamaChatInput = {
   messages: OllamaMessage[];
   temperature?: number;
+  format?: "json";
 };
 
 export class OllamaClientError extends Error {
@@ -26,6 +27,7 @@ export class OllamaClientError extends Error {
 export async function runOllamaChat({
   messages,
   temperature = 0.3,
+  format,
 }: OllamaChatInput): Promise<string> {
   const { baseUrl, model } = getAiRuntimeConfig();
 
@@ -37,6 +39,7 @@ export async function runOllamaChat({
     body: JSON.stringify({
       model,
       stream: false,
+      format,
       options: {
         temperature,
       },

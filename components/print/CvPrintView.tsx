@@ -55,7 +55,7 @@ export function CvPrintView({ data }: CvPrintViewProps) {
               <p className="text-[1.1rem] font-semibold">{item.period}</p>
               <ul className="mt-2 space-y-1 text-[1rem] leading-8">
                 {item.bullets.map((bullet) => (
-                  <li key={bullet}>- {bullet}</li>
+                  <li key={bullet}>{bullet}</li>
                 ))}
               </ul>
             </div>
