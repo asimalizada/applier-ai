@@ -75,18 +75,6 @@ function UtilityButton({ children, onClick }: UtilityButtonProps) {
   );
 }
 
-type LabelProps = {
-  label: string;
-};
-
-function SkillChip({ label }: LabelProps) {
-  return (
-    <span className="rounded-[10px] border border-white/8 bg-[#322d28] px-3 py-2 text-sm text-stone-200">
-      {label}
-    </span>
-  );
-}
-
 export default function Home() {
   const printRootRef = useRef<HTMLDivElement | null>(null);
   const [hasPreview, setHasPreview] = useState(false);
@@ -495,13 +483,6 @@ export default function Home() {
                             />
                           </div>
                         ))}
-                        <div className="flex flex-wrap gap-2.5">
-                          {skills
-                            .flatMap((group) => group.items)
-                            .map((item) => (
-                              <SkillChip key={item} label={item} />
-                            ))}
-                        </div>
                       </div>
                     </PreviewSection>
 
